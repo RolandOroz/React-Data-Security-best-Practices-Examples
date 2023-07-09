@@ -13,7 +13,7 @@ const RequireAuth = ({ allowedRoles }) => {
       const roles = decoded?.UserInfo?.roles || []
 
   return (
-      roles.find(role => allowedRoles?.includes(role)) 
+      roles 
       ? <Outlet /> 
       : auth?.accessToken // changed from user to accessToken to persist
       ? <Navigate to="/unauthorized" state={{ from: location }} replace /> 

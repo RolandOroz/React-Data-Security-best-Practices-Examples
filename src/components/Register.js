@@ -11,21 +11,27 @@ import axios from "../api/axios";
 import { Link } from "react-router-dom";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
-//const USER_REGEX = /^[a-zA-Z]+$/;
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 //const PWD_REGEX = /^(?=.*[a-Z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const PWD_REGEX =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{7,24})/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{7,24})/;
 const REGISTER_URL = "/register";
 
 const Register = () => {
   const userRef = useRef();
   const errRef = useRef();
 
-  const [user, setUser] = useState("");
+  const [username, setUser] = useState("");
   const [validName, setValidName] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
 
-  const [pwd, setPwd] = useState("");
+  const [roles, setRoles] = useState(false);
+
+  
+  const [email, setEmail] = useState("");
+  const [validEmail, setValidEmail] = useState(false);
+  const [emailFocus, setEmailFocus] = useState(false);
+
+  const [password, setPwd] = useState("");
   const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
 
@@ -41,43 +47,52 @@ const Register = () => {
   }, []);
 
   useEffect(() => {
-    setValidName(USER_REGEX.test(user));
-  }, [user]);
+    setValidName(USER_REGEX.test(username));
+  }, [username]);
+  
+  useEffect(() => {
+    setValidEmail(EMAIL_REGEX.test(email));
+  }, [email]);
 
   useEffect(() => {
-    setValidPwd(PWD_REGEX.test(pwd));
-    setValidMatch(pwd === matchPwd);
-  }, [pwd, matchPwd]);
+    setValidPwd(PWD_REGEX.test(password));
+    setValidMatch(password === matchPwd);
+  }, [password, matchPwd]);
 
   useEffect(() => {
     setErrMsg("");
-  }, [user, pwd, matchPwd]);
+  }, [username, password, matchPwd]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // if button enabled with JS hack
-    const v1 = USER_REGEX.test(user);
-    const v2 = PWD_REGEX.test(pwd);
-    if (!v1 || !v2) {
+    const v1 = USER_REGEX.test(username);
+    const v2 = PWD_REGEX.test(password);
+    const v3 = EMAIL_REGEX.test(email);
+    if (!v1 || !v2 || !v3) {
       setErrMsg("Invalid Entry");
       return;
     }
     try {
       const response = await axios.post(
         REGISTER_URL,
-        JSON.stringify({ user, pwd }),
+        JSON.stringify({ username, email, password }),
         {
           headers: { "Content-Type": "application/json" },
+         // withCredentials: true,
           withCredentials: true,
         }
       );
       // TODO: remove console.logs before deployment
       console.log(JSON.stringify(response?.data));
+      console.log(response.data);
+      console.log(response.accessToken);
       //console.log(JSON.stringify(response))
       setSuccess(true);
       //clear state and controlled inputs
       setUser("");
       setPwd("");
+      setEmail("");
       setMatchPwd("");
     } catch (err) {
       if (!err?.response) {
@@ -119,7 +134,7 @@ const Register = () => {
               />
               <FontAwesomeIcon
                 icon={faTimes}
-                className={validName || !user ? "hide" : "invalid"}
+                className={validName || !username ? "hide" : "invalid"}
               />
             </label>
             <input
@@ -128,7 +143,7 @@ const Register = () => {
               ref={userRef}
               autoComplete="off"
               onChange={(e) => setUser(e.target.value)}
-              value={user}
+              value={username}
               required
               aria-invalid={validName ? "false" : "true"}
               aria-describedby="uidnote"
@@ -138,7 +153,9 @@ const Register = () => {
             <p
               id="uidnote"
               className={
-                userFocus && user && !validName ? "instructions" : "offscreen"
+                userFocus && username && !validName
+                  ? "instructions"
+                  : "offscreen"
               }
             >
               <FontAwesomeIcon icon={faInfoCircle} />
@@ -149,6 +166,48 @@ const Register = () => {
               Letters, numbers, underscores, hyphens allowed.
             </p>
 
+            {/* ************************************************************************************************************************* */}
+
+            <label htmlFor="username">
+              Email:
+              <FontAwesomeIcon
+                icon={faCheck}
+                className={validEmail ? "valid" : "hide"}
+              />
+              <FontAwesomeIcon
+                icon={faTimes}
+                className={validEmail || !username || !password ? "hide" : "invalid"}
+              />
+            </label>
+            <input
+              type="text"
+              id="email"
+              ref={userRef}
+              autoComplete="off"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              required
+              aria-invalid={validEmail ? "false" : "true"}
+              aria-describedby="uidnote"
+              onFocus={() => setEmailFocus(true)}
+              onBlur={() => setEmailFocus(false)}
+            />
+            <p
+              id="uidnote"
+              className={
+                emailFocus && email && !validEmail
+                  ? "instructions"
+                  : "offscreen"
+              }
+            >
+              <FontAwesomeIcon icon={faInfoCircle} />
+              7 to 60 characters.
+              <br />
+              Letters, numbers, underscores, at sign allowed.
+            </p>
+
+            {/* ************************************************************************************************************************* */}
+
             <label htmlFor="password">
               Password:
               <FontAwesomeIcon
@@ -157,14 +216,14 @@ const Register = () => {
               />
               <FontAwesomeIcon
                 icon={faTimes}
-                className={validPwd || !pwd ? "hide" : "invalid"}
+                className={validPwd || !password ? "hide" : "invalid"}
               />
             </label>
             <input
               type="password"
               id="password"
               onChange={(e) => setPwd(e.target.value)}
-              value={pwd}
+              value={password}
               required
               aria-invalid={validPwd ? "false" : "true"}
               aria-describedby="pwdnote"

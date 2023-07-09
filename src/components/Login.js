@@ -13,12 +13,15 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+  
 
   const userRef = useRef();
   const errRef = useRef();
 
-  const [user, resetUser, userAttribs] = useInput("user", ""); //useState("");
-  const [pwd, setPwd] = useState("");
+  const [username, resetUsername, usernameAttribs] = useInput("username", ""); //useState("");
+  const [password, setPwd] = useState("");
+  const [email, setEmail] = useState("");
+  const [roles, setRoles] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [check, toggleCheck] = useToggle("persist", false);
 
@@ -28,7 +31,7 @@ const Login = () => {
 
   useEffect(() => {
     setErrMsg("");
-  }, [user, pwd]);
+  }, [username, password, email]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,16 +39,23 @@ const Login = () => {
     try {
       const response = await axios.post(
         LOGIN_URL,
-        JSON.stringify({ user, pwd }),
+        JSON.stringify({ username, roles, password, email }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
+          
         }
       );
+      // TODO Delete logs in production
+      console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.accessToken;
-      setAuth({ user, accessToken });
-      resetUser();
+      console.log(roles);
+
+      setAuth({ username, email, password, roles, accessToken});
+      resetUsername();
       setPwd("");
+      setEmail("");
+      setRoles("");
       navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
@@ -86,16 +96,32 @@ const Login = () => {
           id="username"
           ref={userRef}
           autoComplete="off"
-          {...userAttribs}
+          {...usernameAttribs}
           required
         />
-
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          required
+        />
+       
+        <label htmlFor="roles">Roles:</label>
+        <input
+          type="roles"
+          id="roles"
+          onChange={(e) =>  setRoles(e.target.value)}
+          value={roles}
+          required
+        />
         <label htmlFor="password">Password:</label>
         <input
           type="password"
           id="password"
           onChange={(e) => setPwd(e.target.value)}
-          value={pwd}
+          value={password}
           required
         />
         <button>Sign In</button>

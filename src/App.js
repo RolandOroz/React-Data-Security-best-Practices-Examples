@@ -1,19 +1,19 @@
-import Register from "./components/Register";
-import Login from "./components/Login";
-import Home from "./components/Home";
-import Layout from "./components/Layout";
-import Editor from "./components/Editor";
-import Admin from "./components/Admin";
-import Missing from "./components/Missing";
-import Unauthorized from "./components/Unauthorized";
-import Lounge from "./components/Lounge";
-import LinkPage from "./components/LinkPage";
-import RequireAuth from "./components/RequireAuth";
+import Register from "./components/Register.js";
+import Login from "./components/Login.js";
+import Home from "./components/Home.js";
+import Layout from "./components/Layout.js";
+import Editor from "./components/Editor.js";
+import Admin from "./components/Admin.js";
+import Missing from "./components/Missing.js";
+import Unauthorized from "./components/Unauthorized.js";
+import Lounge from "./components/Lounge.js";
+import LinkPage from "./components/LinkPage.js";
+import RequireAuth from "./components/RequireAuth.js";
 // persist login
-import PersistLogin from "./components/PersistLogin";
+import PersistLogin from "./components/PersistLogin.js";
 import { Routes, Route } from "react-router-dom";
 
-import ROLES from "./model/Roles";
+import {ROLES} from "./model/Roles.js";
 
 function App() {
   return (

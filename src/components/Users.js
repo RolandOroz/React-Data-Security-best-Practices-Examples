@@ -3,7 +3,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Users = () => {
-  const [users,setUsers] = useState();
+  const [username,setUsers] = useState();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,7 +16,7 @@ const Users = () => {
     const getUsers = async () => {
       try {
           const response = await axiosPrivate.get("/users", {
-            signal: controller.signal
+            signal: controller.abort()
           });
           const userNames = response.data.map(user => user.username);
           //TODO delete log
@@ -37,14 +37,14 @@ const Users = () => {
       isMounted && controller.abort();
       //effectRun.current = true;
     }
-  }, [])
+  })
 
   return (
     <article>
       <h2>Users List</h2>
-      {users?.length ? (
+      {username?.length ? (
         <ul>
-          {users.map((user, i) => (
+          {username.map((user, i) => (
             //{/* <li key={i}>{user?.username}</li> */}
             <li key={i}>{user}</li>
           ))}

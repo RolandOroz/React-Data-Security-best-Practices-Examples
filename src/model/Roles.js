@@ -1,8 +1,8 @@
 const ROLES = {
-  User: 2001,
-  Editor: 1984,
-  Admin: 5150,
+  "Admin": 110,
+  "Editor": 210,
+  "User": 310,
 };
 
 
-module.exports = ROLES;
+export  {ROLES};
