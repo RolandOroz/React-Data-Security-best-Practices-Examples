@@ -8,24 +8,26 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../api/axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-//const PWD_REGEX = /^(?=.*[a-Z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{7,24})/;
-const REGISTER_URL = "/register";
+
+
 
 const Register = () => {
+  const REGISTER_URL = "/register";
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/login";
+
   const userRef = useRef();
   const errRef = useRef();
 
   const [username, setUser] = useState("");
   const [validName, setValidName] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
-
-  const [roles, setRoles] = useState(false);
-
   
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
@@ -41,6 +43,11 @@ const Register = () => {
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+
+  //***************
+  //const roles= 310;
+  
+  //***************
 
   useEffect(() => {
     userRef.current.focus();
@@ -89,6 +96,7 @@ const Register = () => {
       console.log(response.accessToken);
       //console.log(JSON.stringify(response))
       setSuccess(true);
+      navigate(from, {replace: true});
       //clear state and controlled inputs
       setUser("");
       setPwd("");
@@ -112,7 +120,7 @@ const Register = () => {
         <section>
           <h1>Success!</h1>
           <p>
-            <a href="#">Sign In</a>
+            <a href="/login">Sign In</a>
           </p>
         </section>
       ) : (

@@ -3,8 +3,7 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Users = () => {
-  const [username,setUsers] = useState();
-  const [userEmail,setUserEmail] = useState();
+  const [user,setUsers] = useState();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,12 +18,10 @@ const Users = () => {
         const response = await axiosPrivate.get("/users", {
           signal: controller.abort(),
         });
-        const userNames = response.data.map((user) => user.username);
-        const userEmail = response.data.map((user) => user.email);
-        //TODO delete log
-        console.log(response.data);
+        const user = response.data.map((user) => user);
+
         //isMounted && setUsers(response.data);
-        isMounted && setUsers(userNames) && setUserEmail(userEmail);
+        isMounted && setUsers(user);
       } catch (error) {
         console.error(error);
         navigate("/login", { state: { from: location }, replace: true });
@@ -44,13 +41,15 @@ const Users = () => {
   return (
     <article>
       <h2>Users List</h2>
-      {username?.length ? (
+      {user?.length ? (
         <ul>
-          {username.map((userN, i) => (
+          {user.map((user, i) => (
             //{/* <li key={i}>{user?.username}</li> */}
-            <li key={i}>{userN}</li>
+            <li key={i}>
+              {user.username}
+             <br /> { user.email}
+            </li>
           ))}
-
         </ul>
       ) : (
         <p>No User to Display</p>

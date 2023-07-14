@@ -27,31 +27,39 @@ function App() {
 
         {/*  protect these routes */}
         {/*  with Persistend Login */}
-        <Route element={<PersistLogin />}>
-          {/* if without Persistend Login, delete <Route element={<PersistLogin />}></Route> */}
-          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-            <Route path="/" element={<Home />} />
-          </Route>
-
-          <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
-            <Route path="editor" element={<Editor />} />
-          </Route>
-
-          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-            <Route path="admin" element={<Admin />} />
-          </Route>
-
-          <Route
-            element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}
-          >
-            <Route path="lounge" element={<Lounge />} />
-          </Route>
-          {/* if without Persistend Login, delete <Route element={<PersistLogin />}></Route> */}
+        {/* <Route element={<PersistLogin />}> */}
+        {/* if without Persistend Login, delete <Route element={<PersistLogin />}></Route> */}
+        <Route
+          element={
+            <RequireAuth
+              allowedRoles={[ROLES.User, ROLES.Editor, ROLES.Admin]}
+            />
+          }
+        >
+          <Route path="/" element={<Home />} />
         </Route>
 
-        {/* catch all */}
-        <Route path="*" element={<Missing />} />
+        <Route
+          element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}
+        >
+          <Route path="editor" element={<Editor />} />
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+          <Route path="admin" element={<Admin />} />
+        </Route>
+
+        <Route
+          element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}
+        >
+          <Route path="lounge" element={<Lounge />} />
+        </Route>
+        {/* if without Persistend Login, delete <Route element={<PersistLogin />}></Route> */}
       </Route>
+
+      {/* catch all */}
+      <Route path="*" element={<Missing />} />
+      {/* </Route> */}
     </Routes>
   );
 }

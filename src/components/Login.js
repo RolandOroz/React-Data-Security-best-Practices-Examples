@@ -13,15 +13,16 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  
 
   const userRef = useRef();
   const errRef = useRef();
+//****************************
 
+//****************************
   const [username, resetUsername, usernameAttribs] = useInput("username", ""); //useState("");
   const [password, setPwd] = useState("");
   const [email, setEmail] = useState("");
-  const [roles, setRoles] = useState("");
+  const [roles] = useState([110]);
   const [errMsg, setErrMsg] = useState("");
   const [check, toggleCheck] = useToggle("persist", false);
 
@@ -29,9 +30,10 @@ const Login = () => {
     userRef.current.focus();
   }, []);
 
+
   useEffect(() => {
     setErrMsg("");
-  }, [username, password, email]);
+  }, [username, password, email,roles]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,20 +45,33 @@ const Login = () => {
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
-          
         }
       );
       // TODO Delete logs in production
-      console.log(JSON.stringify(response?.data));
-      const accessToken = response?.data?.accessToken;
-      console.log(roles);
+      const getRole = response?.data.roles;
+      console.log(getRole);
 
-      setAuth({ username, email, password, roles, accessToken});
+     
+      const accessToken = response?.data?.accessToken;
+console.log({roles});
+
+console.log(response?.data.roles);
+
+
+
+      const rolesC = response?.data?.roles;
+      console.log("rolesC: ",rolesC);
+      setAuth({ username, email, roles, password, accessToken });
+      console.log(username, email, roles, password, accessToken);
       resetUsername();
       setPwd("");
       setEmail("");
-      setRoles("");
+      
+      
       navigate(from, { replace: true });
+
+
+
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -71,7 +86,7 @@ const Login = () => {
     }
   };
 
-/*   const togglePersist = () => {
+  /*   const togglePersist = () => {
     setPersist((prev) => !prev);
   };
 
@@ -107,15 +122,15 @@ const Login = () => {
           value={email}
           required
         />
-       
-        <label htmlFor="roles">Roles:</label>
+
+{/*         <label htmlFor="roles">Roles:</label>
         <input
           type="roles"
           id="roles"
-          onChange={(e) =>  setRoles(e.target.value)}
-          value={roles}
+          onChange={(e) => setRoles(e.target.value)}
+          value={310}
           required
-        />
+        /> */}
         <label htmlFor="password">Password:</label>
         <input
           type="password"
