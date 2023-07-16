@@ -10,7 +10,7 @@ import Lounge from "./components/Lounge.js";
 import LinkPage from "./components/LinkPage.js";
 import RequireAuth from "./components/RequireAuth.js";
 // persist login
-import PersistLogin from "./components/PersistLogin.js";
+//import PersistLogin from "./components/PersistLogin.js";
 import { Routes, Route } from "react-router-dom";
 
 import {ROLES} from "./model/Roles.js";
@@ -25,7 +25,8 @@ function App() {
         <Route path="linkpage" element={<LinkPage />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        {/*  protect these routes */}
+        {/*  protected routes */}
+
         {/*  with Persistend Login */}
         {/* <Route element={<PersistLogin />}> */}
         {/* if without Persistend Login, delete <Route element={<PersistLogin />}></Route> */}
@@ -40,7 +41,7 @@ function App() {
         </Route>
 
         <Route
-          element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}
+          element={<RequireAuth allowedRoles={[ ROLES.Admin]} />}
         >
           <Route path="editor" element={<Editor />} />
         </Route>

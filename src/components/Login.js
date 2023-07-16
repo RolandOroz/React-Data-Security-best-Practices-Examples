@@ -16,13 +16,10 @@ const Login = () => {
 
   const userRef = useRef();
   const errRef = useRef();
-//****************************
-
-//****************************
   const [username, resetUsername, usernameAttribs] = useInput("username", ""); //useState("");
   const [password, setPwd] = useState("");
   const [email, setEmail] = useState("");
-  const [roles] = useState([110]);
+  
   const [errMsg, setErrMsg] = useState("");
   const [check, toggleCheck] = useToggle("persist", false);
 
@@ -33,7 +30,7 @@ const Login = () => {
 
   useEffect(() => {
     setErrMsg("");
-  }, [username, password, email,roles]);
+  }, [username, password, email]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,26 +38,17 @@ const Login = () => {
     try {
       const response = await axios.post(
         LOGIN_URL,
-        JSON.stringify({ username, roles, password, email }),
+        JSON.stringify({ username,  password, email }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
       // TODO Delete logs in production
-      const getRole = response?.data.roles;
-      console.log(getRole);
-
      
       const accessToken = response?.data?.accessToken;
-console.log({roles});
+      const roles = response?.data?.roles;
 
-console.log(response?.data.roles);
-
-
-
-      const rolesC = response?.data?.roles;
-      console.log("rolesC: ",rolesC);
       setAuth({ username, email, roles, password, accessToken });
       console.log(username, email, roles, password, accessToken);
       resetUsername();
