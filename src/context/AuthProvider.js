@@ -4,6 +4,7 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
+  //TODO create a persitend login
 /*   const [persist, setPersist] = useState(
     JSON.parse(localStorage.getItem("persist")) || false
   ); */
