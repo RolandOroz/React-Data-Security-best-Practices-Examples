@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Users from "./Users"
+//import { UsersTable } from "./UsersTable";
 
 const Admin = () => {
   return (
@@ -7,6 +8,7 @@ const Admin = () => {
       <h1>Admins Page</h1>
       <br />
       <Users />
+      
       <br />
       <div className="flexGrow">
         <Link to="/">Home</Link>
@@ -16,3 +18,9 @@ const Admin = () => {
 };
 
 export default Admin;
+
+
+
+
+
+
