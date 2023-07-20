@@ -10,8 +10,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "../api/axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+// eslint-disable-next-line
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
+// eslint-disable-next-line
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+// eslint-disable-next-line
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{7,24})/;
 
 
@@ -43,11 +46,6 @@ const Register = () => {
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
-
-  //***************
-  //const roles= 310;
-  
-  //***************
 
   useEffect(() => {
     userRef.current.focus();
@@ -173,9 +171,6 @@ const Register = () => {
               <br />
               Letters, numbers, underscores, hyphens allowed.
             </p>
-
-            {/* ************************************************************************************************************************* */}
-
             <label htmlFor="username">
               Email:
               <FontAwesomeIcon
@@ -213,8 +208,6 @@ const Register = () => {
               <br />
               Letters, numbers, underscores, at sign allowed.
             </p>
-
-            {/* ************************************************************************************************************************* */}
 
             <label htmlFor="password">
               Password:

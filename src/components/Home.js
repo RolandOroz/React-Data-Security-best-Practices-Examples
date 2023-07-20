@@ -1,15 +1,15 @@
 import { useNavigate, Link } from "react-router-dom";
-//import { useContext } from "react";
-//import AuthContext from "../context/AuthProvider";
+import { useContext } from "react";
+import AuthContext from "../context/AuthProvider";
 import useLogout from "../hooks/useLogout";
 
 const Home = () => {
-  //const { setAuth } = useContext(AuthContext);
+ const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
   const logout = useLogout();
 
   const signOut = async () => {
-    //setAuth({});
+    setAuth({});
     await logout();
     navigate("/linkpage");
   }
@@ -20,13 +20,13 @@ const Home = () => {
       <br />
       <p>You are logged in!</p>
       <br />
-      <Link to="/editor">Go to the Editor page</Link>
+      <Link to="editor">Go to the Editor page</Link>
       <br />
-      <Link to="/admin">Go to the Admin page</Link>
+      <Link to="admin">Go to the Admin page</Link>
       <br />
-      <Link to="/lounge">Go to the Lounge</Link>
+      <Link to="lounge">Go to the Lounge</Link>
       <br />
-      <Link to="/linkpage">Go to the link page</Link>
+      <Link to="linkpage">Go to the link page</Link>
       <div className="flexGrow">
         <button onClick={signOut}>Sign Out</button>
       </div>

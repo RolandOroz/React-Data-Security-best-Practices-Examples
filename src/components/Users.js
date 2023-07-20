@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Users = () => {
-  const [user,setUsers] = useState();
+  const [users,setUsers] = useState();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,13 +41,14 @@ const Users = () => {
   return (
     <article>
       <h2>Users List</h2>
-      {user?.length ? (
+      {users?.length ? (
         <ul>
-          {user.map((user, i) => (
+          {users.map((user, i) => (
             //{/* <li key={i}>{user?.username}</li> */}
             <li key={i}>
               {user.username}
              <br /> { user.email}
+             <br /> { user.roles }
             </li>
           ))}
         </ul>

@@ -16,9 +16,11 @@ const Login = () => {
 
   const userRef = useRef();
   const errRef = useRef();
+
   const [username, resetUsername, usernameAttribs] = useInput("username", ""); //useState("");
+  //const [username, setUser] = useState("");
   const [password, setPwd] = useState("");
-  const [email, setEmail] = useState("");
+  //const [email, setEmail] = useState("");
   
   const [errMsg, setErrMsg] = useState("");
   const [check, toggleCheck] = useToggle("persist", false);
@@ -30,7 +32,7 @@ const Login = () => {
 
   useEffect(() => {
     setErrMsg("");
-  }, [username, password, email]);
+  }, [username, password]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +40,7 @@ const Login = () => {
     try {
       const response = await axios.post(
         LOGIN_URL,
-        JSON.stringify({ username,  password, email }),
+        JSON.stringify({ username,  password}),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -49,11 +51,12 @@ const Login = () => {
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
 
-      setAuth({ username, email, roles, password, accessToken });
-      console.log(username, email, roles, password, accessToken);
+      setAuth({ username, roles, password, accessToken });
+      console.log(username, roles, password, accessToken);
       resetUsername();
+      //setUser("");
       setPwd("");
-      setEmail("");
+      //setEmail("");
       
       
       navigate(from, { replace: true });
@@ -99,24 +102,17 @@ const Login = () => {
           id="username"
           ref={userRef}
           autoComplete="off"
+/*           onChange={(e) => setUser(e.target.value)}
+          value={username} */
           {...usernameAttribs}
           required
         />
-        <label htmlFor="email">Email:</label>
+{/*         <label htmlFor="email">Email:</label>
         <input
           type="email"
           id="email"
           onChange={(e) => setEmail(e.target.value)}
           value={email}
-          required
-        />
-
-{/*         <label htmlFor="roles">Roles:</label>
-        <input
-          type="roles"
-          id="roles"
-          onChange={(e) => setRoles(e.target.value)}
-          value={310}
           required
         /> */}
         <label htmlFor="password">Password:</label>
